@@ -1,0 +1,92 @@
+\documentclass{article}
+\usepackage{esvect}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[vietnamese]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{tcolorbox}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{tikz-3dplot} % For 3D plotting
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17} % Sử dụng phiên bản tương thích mới
+
+\begin{document}
+
+\maketitle
+
+Phần đồ thị:\\
+\underline{Đồ thị 1: $U_{hd}$ trong trường xuyên tâm:}
+\begin{center}
+    \begin{tikzpicture}
+        % Định nghĩa các hằng số mẫu (bạn có thể thay đổi)
+        \def\C{1} % Giá trị đại diện cho M^2 / (2mr^2)
+        \def\E{0.5} % Giá trị năng lượng E
+        \pgfmathsetmacro{\rmin}{sqrt(\C/\E)} % Tính r_min từ E = C / r_min^2
+    
+        \begin{axis}[
+            axis lines=middle, % Trục tọa độ đi qua gốc
+            xlabel=$r$,          % Nhãn trục hoành
+            ylabel={$U_{\text{hd}}$}, % Nhãn trục tung
+            xlabel style={anchor=north east}, % Vị trí nhãn trục hoành
+            ylabel style={anchor=south east}, % Vị trí nhãn trục tung
+            xmin=0,
+            xmax=4,          % Giới hạn trục hoành (điều chỉnh nếu cần)
+            ymin=0,
+            ymax=3,          % Giới hạn trục tung (điều chỉnh nếu cần)
+            xtick={\rmin},     % Đặt tick tại r_min
+            xticklabels={$r_{\min}$}, % Nhãn cho tick r_min
+            ytick={\E},        % Đặt tick tại E
+            yticklabels={$E$},   % Nhãn cho tick E
+            samples=100,       % Số điểm mẫu để vẽ đường cong mượt hơn
+            domain=0.5:4,     % Miền giá trị của r để vẽ (tránh r=0)
+            no markers,        % Không hiển thị dấu điểm trên đồ thị
+            every axis plot/.append style={thick}, % Làm đậm các đường vẽ
+        ]
+    
+        % Vẽ đường cong U_hd = M^2 / (2mr^2) (sử dụng C = 1)
+        \addplot[blue, smooth] { \C / (x^2) }
+            node[pos=0.3, anchor=west, font=\small] {$\frac{M^2}{2mr^2}$}; % Thêm nhãn cho đường cong
+    
+        % Vẽ đường ngang tại E
+        \addplot[red, domain=0:4] { \E }; % Vẽ từ r_min trở đi
+    
+        % Vẽ đường nét đứt từ (r_min, 0) đến (r_min, E)
+        \draw[dotted] (axis cs: \rmin, 0) -- (axis cs: \rmin, \E);
+    
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+\underline{Đồ thị 2: Hình vẽ quỹ đạo, thực tế của hạt trong không gian:}
+\begin{center}
+\begin{tikzpicture}
+    % Định nghĩa tâm
+    \coordinate (O) at (0,0);
+
+    % Vẽ các đường nét đứt tỏa ra từ tâm (12 đường, mỗi đường cách nhau 30 độ)
+    \foreach \angle in {0,30,...,330} {
+        \draw[dashed, gray!50] (O) -- (\angle:3cm); % Đường dài 3cm, màu xám nhạt, nét đứt
+    }
+
+    % Vẽ đường thẳng đứng màu xanh đậm đi qua tâm
+    \draw[blue, thick] (0.5, -3) -- (0.5, 3); % Đường thẳng đứng, dày, màu xanh
+
+    % Vẽ điểm tại tâm (một ngôi sao nhỏ)
+    \fill (O) circle (2pt); % Điểm tròn tại tâm, bán kính 2pt
+
+\end{tikzpicture}
+\end{center}
+
+\end{document}
